@@ -36,6 +36,14 @@ const eliminar = async ( id ) => {
     return;
 }
 
+const edit = async ({ id, titulo, artista, tono }) => {
+    const query = {
+        text: "UPDATE canciones SET titulo = $2, artista = $3, tono = $4 WHERE id = $1",
+        values: [id, titulo, artista, tono ]
+    }
+    const { rows } = await pool.query(query)
+    return rows[0]
+}
 export const cancionesModel = {
-    findAll, agregar, buscarID, eliminar
+    findAll, agregar, buscarID, eliminar, edit
 }

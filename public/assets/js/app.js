@@ -84,16 +84,20 @@ function prepararCancion(i, id) {
     document.getElementById("editar").style.display = "block";
 }
 
-function editarCancion(id) {
-    axios
-        .put(url + "/" + id, {
-            titulo: cancion.value,
-            artista: artista.value,
-            tono: tono.value,
-        })
-        .then(() => {
-            getData();
-            document.getElementById("agregar").style.display = "block";
-            document.getElementById("editar").style.display = "none";
-        });
+async function editarCancion(id) {
+    let data = {
+        titulo: cancion.value,
+        artista: artista.value,
+        tono: tono.value,
+    };
+
+    try {
+        await axios.put(`${url}es/${id}`, data);
+        getData();
+        document.getElementById("agregar").style.display = "block";
+        document.getElementById("editar").style.display = "none";
+    } catch (error) {
+        console.error("Error updating song:", error);
+        alert("Ocurrió un error al actualizar la canción. Por favor, inténtelo de nuevo.");
+    }
 }

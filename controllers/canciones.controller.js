@@ -44,7 +44,22 @@ const cancionEliminar = async (req, res) => {
     }
 };
 
+const cancionEditar = async (req, res) => {
+    try {
+        const { id } = req.params
+        const cancion = await cancionesModel.buscarID(id)
+        if (!cancion) return res.status(404).json({ ok: false, msg: "no se encontró el estudiante" })
+        const { titulo, artista, tono } = req.body
+        const datos = { id, titulo, artista, tono }
+        const cancionesEdit = await cancionesModel.edit(datos)
+        return res.status(201).json(cancionesEdit)
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ ok: false })
+    }
+}
+
 
 export const cancionesController = {
-    canciones, cancionAgregar, cancionEliminar
+    canciones, cancionAgregar, cancionEliminar, cancionEditar
 }
