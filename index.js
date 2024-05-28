@@ -2,8 +2,8 @@ import 'dotenv/config'
 import express from 'express';
 import { engine } from 'express-handlebars';
 import cancionesRoutes from './routes/canciones.route.js'
-
 import path from 'path';
+import { cancionesController } from './controllers/canciones.controller.js';
 
 const __dirname = import.meta.dirname;
 
@@ -19,8 +19,8 @@ app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname,'./views'));
 
 
-
-app.use('/canciones', cancionesRoutes)
+app.get('/canciones', cancionesController.canciones)
+app.use('/cancion', cancionesRoutes)
 app.get('/', (req, res) => {
     res.render('home');
 });

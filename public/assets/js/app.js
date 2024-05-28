@@ -49,7 +49,7 @@ async function nuevaCancion() {
     console.log(data);
 
     try {
-        await axios.post(url + "es", data);
+        await axios.post(url, data);
         getData(); // Refresh the data after a successful post
     } catch (error) {
         console.error("Error adding new song:", error);
@@ -63,7 +63,7 @@ async function nuevaCancion() {
 
 async function eliminarCancion(index, id) {
     try {
-        const response = await axios.delete(`${url}es/${id}`);
+        const response = await axios.delete(`${url}/${id}`);
         console.log(response);
         alert(`Canción ${canciones[index].titulo} eliminada`);
         getData(); // Refresh the data after a successful delete
@@ -92,7 +92,7 @@ async function editarCancion(id) {
     };
 
     try {
-        await axios.put(`${url}es/${id}`, data);
+        await axios.put(`${url}/${id}`, data);
         getData();
         document.getElementById("agregar").style.display = "block";
         document.getElementById("editar").style.display = "none";
