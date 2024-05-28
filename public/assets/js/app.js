@@ -47,9 +47,9 @@ async function nuevaCancion() {
         tono: tono.value,
     };
     console.log(data);
-    
+
     try {
-        await axios.post(url+"es", data);
+        await axios.post(url + "es", data);
         getData(); // Refresh the data after a successful post
     } catch (error) {
         console.error("Error adding new song:", error);
@@ -61,11 +61,16 @@ async function nuevaCancion() {
     tono.value = "";
 }
 
-function eliminarCancion(i, id) {
-    axios.delete(url + "?id=" + id).then(() => {
-        alert("Canción " + canciones[i].titulo + " eliminada");
-        getData();
-    });
+async function eliminarCancion(index, id) {
+    try {
+        const response = await axios.delete(`${url}es/${id}`);
+        console.log(response);
+        alert(`Canción ${canciones[index].titulo} eliminada`);
+        getData(); // Refresh the data after a successful delete
+    } catch (error) {
+        console.error("Error deleting song:", error);
+        alert("Ocurrió un error al eliminar la canción. Por favor, inténtelo de nuevo.");
+    }
 }
 
 function prepararCancion(i, id) {
