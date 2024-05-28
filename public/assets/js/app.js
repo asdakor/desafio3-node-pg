@@ -5,47 +5,60 @@ let artista = document.getElementById("artista");
 let tono = document.getElementById("tono");
 
 let canciones = [];
-window.onload = getData();
+
+window.onload = () => {
+    getData();
+};
 
 async function getData() {
-    console.log(url)
-    await axios.get(url + "es").then((data) => {
-        canciones = data.data;
+    try {
+        const response = await axios.get(url + "es");
+        canciones = response.data;
         tbody.innerHTML = "";
-        console.log(canciones)
+        console.log(canciones);
         canciones.forEach((c, i) => {
             tbody.innerHTML += `
-    <tr>
-      <td>${i + 1}</td>
-      <td>${c.titulo}</td>
-      <td>${c.artista}</td>
-      <td>${c.tono}</td>
-      <td>
-        <button class="btn btn-warning" onclick="prepararCancion(${i},'${c.id
-                }')">Editar</button>
-        <button class="btn btn-danger" onclick="eliminarCancion(${i},'${c.id
-                }')">Eliminar</button>
-      </td>
-    </tr>
-  `;
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${c.titulo}</td>
+                    <td>${c.artista}</td>
+                    <td>${c.tono}</td>
+                    <td>
+                        <button class="btn btn-warning" onclick="prepararCancion(${i}, '${c.id}')">Editar</button>
+                        <button class="btn btn-danger" onclick="eliminarCancion(${i}, '${c.id}')">Eliminar</button>
+                    </td>
+                </tr>
+            `;
         });
-    });
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+
+    // Clear the input fields
     cancion.value = "";
     artista.value = "";
     tono.value = "";
 }
 
-function nuevaCancion() {
-    cancion;
-    artista;
-    tono;
+async function nuevaCancion() {
     let data = {
         titulo: cancion.value,
         artista: artista.value,
         tono: tono.value,
     };
     console.log(data);
-    axios.post(url, data).then(() => getData());
+    
+    try {
+        await axios.post(url+"es", data);
+        getData(); // Refresh the data after a successful post
+    } catch (error) {
+        console.error("Error adding new song:", error);
+    }
+
+    // Clear the input fields
+    cancion.value = "";
+    artista.value = "";
+    tono.value = "";
 }
 
 function eliminarCancion(i, id) {
